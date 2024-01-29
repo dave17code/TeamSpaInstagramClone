@@ -85,8 +85,22 @@ class ViewController: UIViewController {
     let moreButton = UIButton().then {
         $0.setImage(UIImage(named: "More"), for: .normal)
     }
-    let followMessageHStackview = UIStackView().then {
+    let followMessageMoreHStackview = UIStackView().then {
         $0.spacing = 8
+        $0.distribution = .fill
+    }
+    let followButton = UIButton().then {
+        $0.setTitle("Follow", for: .normal)
+        $0.setTitleColor(UIColor.white, for: .normal)
+        $0.backgroundColor = UIColor(red: 0.22, green: 0.6, blue: 0.95, alpha: 1)
+        $0.layer.cornerRadius = 4
+    }
+    let messageButton = UIButton().then {
+        $0.setTitle("Message", for: .normal)
+        $0.setTitleColor(UIColor.black, for: .normal)
+        $0.layer.borderWidth = 1.5
+        $0.layer.borderColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1).cgColor
+        $0.layer.cornerRadius = 4
     }
     
     override func viewDidLoad() {
@@ -103,14 +117,14 @@ class ViewController: UIViewController {
         view.addSubview(userFollowInfoView)
         view.addSubview(userIntroduceVStackView)
         view.addSubview(moreButton)
+        view.addSubview(followMessageMoreHStackview)
         postVStackView.addArrangedSubviews(postCountLabel, postLabel)
         followerVStackView.addArrangedSubviews(followerCountLabel, followerLabel)
         followingVStackView.addArrangedSubviews(followingCountLabel, followingLabel)
         userFollowInfoHStackView.addArrangedSubviews(postVStackView, followerVStackView, followingVStackView)
         userFollowInfoView.addSubview(userFollowInfoHStackView)
         userIntroduceVStackView.addArrangedSubviews(userIntroduceLabel1, userIntroduceLabel2, userIntroduceLabel3)
-        
-        
+        followMessageMoreHStackview.addArrangedSubviews(followButton, messageButton, moreButton)
     }
     
     func setUpLayout() {
@@ -141,13 +155,20 @@ class ViewController: UIViewController {
         }
         userIntroduceVStackView.snp.makeConstraints {
             $0.top.equalTo(userProfileImage.snp.bottom).offset(14)
-            $0.leading.equalToSuperview().inset(14)
+            $0.leading.equalToSuperview().inset(15)
         }
         moreButton.snp.makeConstraints {
             $0.width.equalTo(30)
             $0.height.equalTo(30)
+        }
+        followButton.snp.makeConstraints {
+            $0.width.equalTo(messageButton.snp.width)
+        }
+        followMessageMoreHStackview.snp.makeConstraints {
+            $0.height.equalTo(30)
             $0.top.equalTo(userIntroduceLabel3.snp.bottom).offset(11)
-            $0.trailing.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(15)
+            $0.trailing.equalToSuperview().inset(15)
         }
     }
 }
