@@ -16,70 +16,79 @@ class ViewController: UIViewController {
         $0.font = .boldSystemFont(ofSize: 18)
         $0.text = "nebecamp"
     }
-    
     let menuButton = UIButton().then {
         $0.setImage(UIImage(named: "Menu"), for: .normal)
     }
-    
     let userProfileImage = UIImageView().then {
         $0.image = UIImage(named: "UserProfileImage")
     }
-    
     let userFollowInfoView = UIView().then {
         $0.backgroundColor = .green
     }
-    
-    let userInfoHStackView = UIStackView().then {
-        $0.axis = .horizontal
+    let userFollowInfoHStackView = UIStackView().then {
         $0.distribution = .fillEqually
         $0.spacing = 24
     }
-    
     let postVStackView = UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
     }
-    
     let postCountLabel = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 16.5)
         $0.text = "7"
     }
-    
     let postLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
         $0.text = "post"
     }
-    
     let followerVStackView = UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
     }
-    
     let followerCountLabel = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 16.5)
         $0.text = "7"
     }
-    
     let followerLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
         $0.text = "follower"
     }
-    
     let followingVStackView = UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
     }
-    
     let followingCountLabel = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 16.5)
         $0.text = "0"
     }
-    
     let followingLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
         $0.text = "following"
     }
-
+    let userIntroduceVStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 2
+    }
+    let userIntroduceLabel1 = UILabel().then {
+        $0.font = .boldSystemFont(ofSize: 14)
+        $0.text = "르탄이"
+    }
+    let userIntroduceLabel2 = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.text = "iOS Developer 🍎"
+    }
+    let userIntroduceLabel3 = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.text = "spartacodingclub.kr"
+        $0.textColor = UIColor(red: 0.06, green: 0.27, blue: 0.49, alpha: 1)
+    }
+    let moreButton = UIButton().then {
+        $0.setImage(UIImage(named: "More"), for: .normal)
+    }
+    let followMessageHStackview = UIStackView().then {
+        $0.spacing = 8
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -92,11 +101,16 @@ class ViewController: UIViewController {
         view.addSubview(menuButton)
         view.addSubview(userProfileImage)
         view.addSubview(userFollowInfoView)
+        view.addSubview(userIntroduceVStackView)
+        view.addSubview(moreButton)
         postVStackView.addArrangedSubviews(postCountLabel, postLabel)
         followerVStackView.addArrangedSubviews(followerCountLabel, followerLabel)
         followingVStackView.addArrangedSubviews(followingCountLabel, followingLabel)
-        userInfoHStackView.addArrangedSubviews(postVStackView, followerVStackView, followingVStackView)
-        userFollowInfoView.addSubview(userInfoHStackView)
+        userFollowInfoHStackView.addArrangedSubviews(postVStackView, followerVStackView, followingVStackView)
+        userFollowInfoView.addSubview(userFollowInfoHStackView)
+        userIntroduceVStackView.addArrangedSubviews(userIntroduceLabel1, userIntroduceLabel2, userIntroduceLabel3)
+        
+        
     }
     
     func setUpLayout() {
@@ -108,7 +122,7 @@ class ViewController: UIViewController {
             $0.width.equalTo(21)
             $0.height.equalTo(17.5)
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
-            $0.right.equalToSuperview().inset(28)
+            $0.trailing.equalToSuperview().inset(20)
         }
         userProfileImage.snp.makeConstraints {
             $0.width.equalTo(88)
@@ -122,8 +136,18 @@ class ViewController: UIViewController {
             $0.leading.equalTo(userProfileImage.snp.trailing).offset(0)
             $0.trailing.equalToSuperview()
         }
-        userInfoHStackView.snp.makeConstraints {
+        userFollowInfoHStackView.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
+        }
+        userIntroduceVStackView.snp.makeConstraints {
+            $0.top.equalTo(userProfileImage.snp.bottom).offset(14)
+            $0.leading.equalToSuperview().inset(14)
+        }
+        moreButton.snp.makeConstraints {
+            $0.width.equalTo(30)
+            $0.height.equalTo(30)
+            $0.top.equalTo(userIntroduceLabel3.snp.bottom).offset(11)
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
 }
