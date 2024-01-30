@@ -102,6 +102,15 @@ class ViewController: UIViewController {
         $0.layer.borderColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1).cgColor
         $0.layer.cornerRadius = 4
     }
+    let divider1 = UIView().then {
+        $0.backgroundColor = UIColor(red: 0.86, green: 0.86, blue: 0.86, alpha: 1)
+    }
+    let gridImageView = UIView().then {
+        $0.backgroundColor = .green
+    }
+    let gridImage = UIImageView().then {
+        $0.image = UIImage(named: "Grid")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,6 +127,9 @@ class ViewController: UIViewController {
         view.addSubview(userIntroduceVStackView)
         view.addSubview(moreButton)
         view.addSubview(followMessageMoreHStackview)
+        view.addSubview(divider1)
+        view.addSubview(gridImageView)
+        
         postVStackView.addArrangedSubviews(postCountLabel, postLabel)
         followerVStackView.addArrangedSubviews(followerCountLabel, followerLabel)
         followingVStackView.addArrangedSubviews(followingCountLabel, followingLabel)
@@ -125,6 +137,7 @@ class ViewController: UIViewController {
         userFollowInfoView.addSubview(userFollowInfoHStackView)
         userIntroduceVStackView.addArrangedSubviews(userIntroduceLabel1, userIntroduceLabel2, userIntroduceLabel3)
         followMessageMoreHStackview.addArrangedSubviews(followButton, messageButton, moreButton)
+        gridImageView.addSubview(gridImage)
     }
     
     func setUpLayout() {
@@ -169,6 +182,22 @@ class ViewController: UIViewController {
             $0.top.equalTo(userIntroduceLabel3.snp.bottom).offset(11)
             $0.leading.equalToSuperview().inset(15)
             $0.trailing.equalToSuperview().inset(15)
+        }
+        divider1.snp.makeConstraints {
+            $0.height.equalTo(1)
+            $0.top.equalTo(followMessageMoreHStackview.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview()
+        }
+        gridImageView.snp.makeConstraints {
+            $0.width.equalTo(view.frame.width / 3)
+            $0.height.equalTo(41)
+            $0.top.equalTo(divider1.snp.bottom)
+        }
+        gridImage.snp.makeConstraints {
+            $0.width.equalTo(22.5)
+            $0.height.equalTo(22.5)
+            $0.top.equalToSuperview().inset(8)
+            $0.leading.equalToSuperview().inset(52)
         }
     }
 }
