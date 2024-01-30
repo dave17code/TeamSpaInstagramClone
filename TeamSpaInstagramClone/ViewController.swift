@@ -111,6 +111,12 @@ class ViewController: UIViewController {
     let gridImage = UIImageView().then {
         $0.image = UIImage(named: "Grid")
     }
+    let sectionIndicator = UIView().then {
+        $0.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+    }
+    let bottomView = UIView().then {
+        $0.backgroundColor = .green
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +135,8 @@ class ViewController: UIViewController {
         view.addSubview(followMessageMoreHStackview)
         view.addSubview(divider1)
         view.addSubview(gridImageView)
+        view.addSubview(sectionIndicator)
+        view.addSubview(bottomView)
         
         postVStackView.addArrangedSubviews(postCountLabel, postLabel)
         followerVStackView.addArrangedSubviews(followerCountLabel, followerLabel)
@@ -138,6 +146,7 @@ class ViewController: UIViewController {
         userIntroduceVStackView.addArrangedSubviews(userIntroduceLabel1, userIntroduceLabel2, userIntroduceLabel3)
         followMessageMoreHStackview.addArrangedSubviews(followButton, messageButton, moreButton)
         gridImageView.addSubview(gridImage)
+        
     }
     
     func setUpLayout() {
@@ -197,7 +206,17 @@ class ViewController: UIViewController {
             $0.width.equalTo(22.5)
             $0.height.equalTo(22.5)
             $0.top.equalToSuperview().inset(8)
-            $0.leading.equalToSuperview().inset(52)
+            $0.centerX.equalToSuperview()
+        }
+        sectionIndicator.snp.makeConstraints {
+            $0.height.equalTo(1)
+            $0.width.equalTo(view.frame.width / 3)
+            $0.top.equalTo(gridImageView.snp.bottom)
+        }
+        bottomView.snp.makeConstraints {
+            $0.height.equalToSuperview().multipliedBy(0.07)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
