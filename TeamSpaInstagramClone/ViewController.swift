@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 class ViewController: UIViewController {
-    
+        
     let userName = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 18)
         $0.text = "nebecamp"
@@ -114,8 +114,23 @@ class ViewController: UIViewController {
     let sectionIndicator = UIView().then {
         $0.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
     }
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout()).then {
+        $0.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        $0.backgroundColor = .systemPink
+        $0.dataSource = self
+        $0.delegate = self
+    }
+    let divider2 = UIView().then {
+        $0.backgroundColor = UIColor(red: 0.86, green: 0.86, blue: 0.86, alpha: 1)
+    }
     let bottomView = UIView().then {
         $0.backgroundColor = .green
+    }
+    let profileTabBarIcon = UIImageView().then {
+        $0.image = UIImage(named: "Profile")
+    }
+    let bottomdSafeAreaCoverView = UIView().then {
+        $0.backgroundColor = .blue
     }
     
     override func viewDidLoad() {
@@ -123,6 +138,7 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         setUpViewHierarchy()
         setUpLayout()
+        collectionView.collectionViewLayout = setUpCollectionViewLayout()
     }
     
     func setUpViewHierarchy() {
@@ -137,6 +153,9 @@ class ViewController: UIViewController {
         view.addSubview(gridImageView)
         view.addSubview(sectionIndicator)
         view.addSubview(bottomView)
+        view.addSubview(bottomdSafeAreaCoverView)
+        view.addSubview(collectionView)
+        view.addSubview(divider2)
         
         postVStackView.addArrangedSubviews(postCountLabel, postLabel)
         followerVStackView.addArrangedSubviews(followerCountLabel, followerLabel)
@@ -146,7 +165,7 @@ class ViewController: UIViewController {
         userIntroduceVStackView.addArrangedSubviews(userIntroduceLabel1, userIntroduceLabel2, userIntroduceLabel3)
         followMessageMoreHStackview.addArrangedSubviews(followButton, messageButton, moreButton)
         gridImageView.addSubview(gridImage)
-        
+        bottomView.addSubview(profileTabBarIcon)
     }
     
     func setUpLayout() {
@@ -213,10 +232,62 @@ class ViewController: UIViewController {
             $0.width.equalTo(view.frame.width / 3)
             $0.top.equalTo(gridImageView.snp.bottom)
         }
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(sectionIndicator.snp.bottom).offset(1)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(divider2.snp.top).offset(1)
+        }
+        divider2.snp.makeConstraints {
+            $0.height.equalTo(1)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(bottomView.snp.top)
+            
+        }
         bottomView.snp.makeConstraints {
-            $0.height.equalToSuperview().multipliedBy(0.07)
+            $0.height.equalTo(55)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.leading.trailing.equalToSuperview()
+        }
+        bottomdSafeAreaCoverView.snp.makeConstraints {
+            $0.top.equalTo(bottomView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    func setUpCollectionViewLayout() -> UICollectionViewLayout {
+        // 섹션에 대한 레이아웃을 정의합니다.
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0 / 3), heightDimension: .fractionalWidth(1.0 / 3))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // 그룹을 설정합니다.
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0 / 3))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item, item])
+
+        // 섹션을 생성합니다.
+        let section = NSCollectionLayoutSection(group: group)
+        
+        // 레이아웃을 반환합니다.
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+}
+
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return ImageModel.images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        let image = ImageModel.images[indexPath.row]
+        cell.configure(image)
+        return cell
+    }
+}
+
+extension UIStackView {
+    func addArrangedSubviews(_ views: UIView...) {
+        for view in views {
+            self.addArrangedSubview(view)
         }
     }
 }
@@ -241,13 +312,5 @@ extension UIViewController {
     
     func toPreview() -> some View {
         Preview(viewController: self)
-    }
-}
-
-extension UIStackView {
-    func addArrangedSubviews(_ views: UIView...) {
-        for view in views {
-            self.addArrangedSubview(view)
-        }
     }
 }
