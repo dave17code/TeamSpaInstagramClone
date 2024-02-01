@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         $0.image = UIImage(named: "UserProfileImage")
     }
     let userFollowInfoView = UIView().then {
-        $0.backgroundColor = .green
+        $0.backgroundColor = .white
     }
     let userFollowInfoHStackView = UIStackView().then {
         $0.distribution = .fillEqually
@@ -106,7 +106,7 @@ class ViewController: UIViewController {
         $0.backgroundColor = UIColor(red: 0.86, green: 0.86, blue: 0.86, alpha: 1)
     }
     let gridImageView = UIView().then {
-        $0.backgroundColor = .green
+        $0.backgroundColor = .white
     }
     let gridImage = UIImageView().then {
         $0.image = UIImage(named: "Grid")
@@ -116,7 +116,7 @@ class ViewController: UIViewController {
     }
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: setUpCollectionViewLayout()).then {
         $0.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        $0.backgroundColor = .systemPink
+        $0.backgroundColor = .white
         $0.dataSource = self
         $0.delegate = self
     }
@@ -124,13 +124,13 @@ class ViewController: UIViewController {
         $0.backgroundColor = UIColor(red: 0.86, green: 0.86, blue: 0.86, alpha: 1)
     }
     let bottomView = UIView().then {
-        $0.backgroundColor = .green
+        $0.backgroundColor = .systemGray6
     }
     let profileTabBarIcon = UIImageView().then {
         $0.image = UIImage(named: "Profile")
     }
     let bottomdSafeAreaCoverView = UIView().then {
-        $0.backgroundColor = .blue
+        $0.backgroundColor = .systemGray6
     }
     
     override func viewDidLoad() {
@@ -152,10 +152,10 @@ class ViewController: UIViewController {
         view.addSubview(divider1)
         view.addSubview(gridImageView)
         view.addSubview(sectionIndicator)
-        view.addSubview(bottomView)
-        view.addSubview(bottomdSafeAreaCoverView)
         view.addSubview(collectionView)
         view.addSubview(divider2)
+        view.addSubview(bottomView)
+        view.addSubview(bottomdSafeAreaCoverView)
         
         postVStackView.addArrangedSubviews(postCountLabel, postLabel)
         followerVStackView.addArrangedSubviews(followerCountLabel, followerLabel)
@@ -241,12 +241,17 @@ class ViewController: UIViewController {
             $0.height.equalTo(1)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(bottomView.snp.top)
-            
         }
         bottomView.snp.makeConstraints {
             $0.height.equalTo(55)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+        profileTabBarIcon.snp.makeConstraints {
+            $0.width.equalTo(22)
+            $0.height.equalTo(22)
+            $0.top.equalToSuperview().inset(13.5)
+            $0.centerX.equalToSuperview()
         }
         bottomdSafeAreaCoverView.snp.makeConstraints {
             $0.top.equalTo(bottomView.snp.bottom)
@@ -255,19 +260,23 @@ class ViewController: UIViewController {
     }
     
     func setUpCollectionViewLayout() -> UICollectionViewLayout {
-        // 섹션에 대한 레이아웃을 정의합니다.
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0 / 3), heightDimension: .fractionalWidth(1.0 / 3))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        // 그룹을 설정합니다.
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0 / 3))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item, item])
-
-        // 섹션을 생성합니다.
-        let section = NSCollectionLayoutSection(group: group)
-        
-        // 레이아웃을 반환합니다.
-        return UICollectionViewCompositionalLayout(section: section)
+        UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
+            // 아이템 크기를 정의합니다.
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0 / 3), heightDimension: .fractionalWidth(1.0 / 3))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            // 아이템의 콘텐츠 인셋을 설정합니다.
+            item.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+            
+            // 그룹 크기를 정의합니다.
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0 / 3))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item, item])
+            
+            // 섹션을 정의합니다.
+            let section = NSCollectionLayoutSection(group: group)
+            // 섹션의 콘텐츠 인셋을 설정합니다.
+            section.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+            return section
+        }
     }
 }
 

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Foundation
 
 struct ImageModel {
     static let images: [UIImage] = (1...7).compactMap { UIImage(named: "Picture\($0)") }

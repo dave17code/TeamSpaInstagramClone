@@ -12,8 +12,7 @@ import Then
 class CollectionViewCell: UICollectionViewCell {
     
     private let imageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
+        $0.contentMode = .scaleToFill
     }
     
     override init(frame: CGRect) {
